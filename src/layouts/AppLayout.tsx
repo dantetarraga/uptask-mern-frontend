@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Logo from "../components/Logo"
 import NavMenu from "@/components/NavMenu"
+import { ToastContainer } from "react-toastify"
 
 const AppLayout = () => {
   return (
@@ -24,6 +25,12 @@ const AppLayout = () => {
           {new Date().getFullYear()} - UpTask
         </p>
       </footer>
+
+      <ToastContainer 
+        position="top-right"
+        pauseOnFocusLoss={false}
+        pauseOnHover={false}
+      />
     </>
   )
 }
