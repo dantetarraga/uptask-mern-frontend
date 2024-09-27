@@ -1,7 +1,17 @@
+import { getProjects } from "@/api/apiProject"
+import ProjectCard from "@/components/projects/ProjectCard"
+import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 
 const DashboardView = () => {
-  return (
+  const { data, isLoading } = useQuery({
+    queryKey: ['projects'],
+    queryFn: getProjects
+  })
+
+  if (isLoading) return <p>Loading...</p>
+
+  if (data) return (
     <>
       <h1 className="text-5xl font-black">My Projects</h1>
       <p className="text-2xl font-light text-gray-500 mt-5">
@@ -16,6 +26,22 @@ const DashboardView = () => {
           Create Project
         </Link>
       </nav>    
+
+      <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
+        {
+          data.length > 0 ? (
+            data.map(project => (
+              <li className='flex justify-between gap-x-6 px-5 py-10'>
+                <ProjectCard key={project.id} project={project} />
+              </li>
+            ))
+          ) : (
+            <p className="tex-center py-20">
+              No projects found. <Link to='/projects/create' className="text-fuchsia-500 font-bold">Create one</Link>
+            </p>
+          )
+        }
+      </ul>
     </>
   )
 }

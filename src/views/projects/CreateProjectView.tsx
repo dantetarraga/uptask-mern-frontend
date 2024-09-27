@@ -4,11 +4,12 @@ import ProjectForm from "@/components/projects/ProjectForm";
 import { projectFormData } from "types";
 import { createProject } from "@/api/apiProject";
 import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
 
 const initialValues: projectFormData = {
   projectName: "",
   clientName: "",
-  description: ""
+  description: "",
 };
 
 const CreateProjectView = () => {
@@ -18,12 +19,19 @@ const CreateProjectView = () => {
     handleSubmit,
     formState: { errors }
   } = useForm({ defaultValues: initialValues });
+  const mutation = useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      toast.success("Project created successfully");
+      navigate("/");
+    },
+    onError: () => {
+      toast.error("An error occurred while creating the project");
+    }
+  })
 
   const onSubmit = async (formData: projectFormData) => {
-    const data = await createProject(formData);  
-    if (data) toast.success("Project created successfully");
-
-    navigate("/");
+    await mutation.mutateAsync(formData);
   };
 
   return (
