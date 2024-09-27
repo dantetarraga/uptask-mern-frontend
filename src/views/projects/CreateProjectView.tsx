@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ProjectForm from "@/components/projects/ProjectForm";
 import { projectFormData } from "types";
+import { createProject } from "@/api/apiProject";
 
 const initialValues: projectFormData = {
   projectName: "",
@@ -16,8 +17,9 @@ const CreateProjectView = () => {
     formState: { errors }
   } = useForm({ defaultValues: initialValues });
 
-  const onSubmit = (data: projectFormData) => {
-    console.log(data);
+  const onSubmit = async (data: projectFormData) => {
+    const result = await createProject(data);
+    console.log(result);
   };
 
   return (
