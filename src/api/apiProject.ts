@@ -1,4 +1,4 @@
-import api from "lib/axios";
+import api from "@/lib/axios";
 import { projectFormData } from "../types";
 
 export const createProject = async (data: projectFormData) => {
