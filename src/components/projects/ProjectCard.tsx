@@ -3,12 +3,27 @@ import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { Project } from "@/types/index";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteProject } from "@/api/apiProject";
+import { toast } from "react-toastify";
 
 interface Props {
   project: Project
 }
 
 const ProjectCard = ({ project }: Props) => {
+  const queryClient = useQueryClient();
+  const {mutate} = useMutation({
+    mutationFn: deleteProject,
+    onError: () => {
+      toast.error('An error occurred while deleting the project')
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['projects']})
+      toast.success('Project deleted successfully')
+    }
+  })
+
   return (
     <>
       <div className='flex min-w-0 gap-x-4'>
@@ -59,7 +74,7 @@ const ProjectCard = ({ project }: Props) => {
                 <button
                   type='button'
                   className='block px-3 py-1 text-sm leading-6 text-red-500'
-                  onClick={() => {}}
+                  onClick={() => mutate(project.id)}
                 >
                   Delete Project
                 </button>

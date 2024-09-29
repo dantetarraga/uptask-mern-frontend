@@ -32,7 +32,7 @@ const DashboardView = () => {
         {
           data.length > 0 ? (
             data.map((project: Project) => (
-              <li className='flex justify-between gap-x-6 px-5 py-10'>
+              <li key={project.id} className='flex justify-between gap-x-6 px-5 py-10'>
                 <ProjectCard key={project.id} project={project} />
               </li>
             ))

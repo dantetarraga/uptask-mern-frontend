@@ -1,26 +1,48 @@
 import { projectFormData } from "@/types/index";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProjectForm from "./ProjectForm";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateProject } from "@/api/apiProject";
+import { toast } from "react-toastify";
 
 interface Props {
   project: projectFormData;
+  projectId: string;
 }
 
-const EditProjectForm = ({project}: Props) => {
+const EditProjectForm = ({project, projectId}: Props) => {
   const initialValues: projectFormData = {
     projectName: project.projectName,
     clientName: project.clientName,
     description: project.description
   };
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm({ defaultValues: initialValues });
+  const queryClient = useQueryClient();
+  const {mutate} = useMutation({
+    mutationFn: updateProject,
+    onError: () => {
+      toast.error('An error occurred while updating the project')
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['project', projectId]})
+      queryClient.invalidateQueries({queryKey: ['projects']})
+      toast.success('Project updated successfully')
+      navigate('/')
+    }
+  })
 
-  const onSubmit = async (data: projectFormData) => {
-    console.log(data);
+  const onSubmit = async (formData: projectFormData) => {
+    const data = {
+      formData,
+      projectId
+    }
+    mutate(data)
   };
 
   return (
