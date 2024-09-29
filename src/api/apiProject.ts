@@ -22,3 +22,11 @@ export const getProjects = async () => {
       throw new Error(error);
     });
 }
+
+export const getProjectById = async (projectId: string) => {
+  return api.get(`/projects/${projectId}`)
+    .then(response => response.data.data)
+    .catch(error => {
+      throw new Error(error);
+    });
+}

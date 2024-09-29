@@ -2,8 +2,13 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
+import { Project } from "@/types/index";
 
-const ProjectCard = ({ project }) => {
+interface Props {
+  project: Project
+}
+
+const ProjectCard = ({ project }: Props) => {
   return (
     <>
       <div className='flex min-w-0 gap-x-4'>
@@ -39,15 +44,15 @@ const ProjectCard = ({ project }) => {
                   to={``}
                   className='block px-3 py-1 text-sm leading-6 text-gray-900'
                 >
-                  Ver Proyecto
+                  View Proyecto
                 </Link>
               </Menu.Item>
               <Menu.Item>
                 <Link
-                  to={``}
+                  to={`/projects/${project.id}/edit`}
                   className='block px-3 py-1 text-sm leading-6 text-gray-900'
                 >
-                  Editar Proyecto
+                  Edit Project
                 </Link>
               </Menu.Item>
               <Menu.Item>
@@ -56,7 +61,7 @@ const ProjectCard = ({ project }) => {
                   className='block px-3 py-1 text-sm leading-6 text-red-500'
                   onClick={() => {}}
                 >
-                  Eliminar Proyecto
+                  Delete Project
                 </button>
               </Menu.Item>
             </Menu.Items>

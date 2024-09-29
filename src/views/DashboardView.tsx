@@ -2,6 +2,7 @@ import { getProjects } from "@/api/apiProject"
 import ProjectCard from "@/components/projects/ProjectCard"
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
+import { Project } from "../types"
 
 const DashboardView = () => {
   const { data, isLoading } = useQuery({
@@ -30,7 +31,7 @@ const DashboardView = () => {
       <ul role="list" className="divide-y divide-gray-100 border border-gray-100 mt-10 bg-white shadow-lg">
         {
           data.length > 0 ? (
-            data.map(project => (
+            data.map((project: Project) => (
               <li className='flex justify-between gap-x-6 px-5 py-10'>
                 <ProjectCard key={project.id} project={project} />
               </li>
